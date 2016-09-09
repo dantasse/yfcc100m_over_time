@@ -24,6 +24,7 @@ outwriter = csv.writer(open(args.outfile, 'w'))
 #         longest_line = len(line)
 # 
 # print "Found longest line, it is: %s" % str(longest_line)
+earliest_date = datetime.date(2016,1,1)
 longest_line = 197990 # Found this when I ran it once before.
 counter = 0
 reader = csv.reader(open(args.infile), delimiter='\t')
@@ -38,6 +39,8 @@ for line in reader:
     except:
         print "skipping row because failed to parse date: " + str(line[5])
         continue
+    if date < earliest_date:
+        earliest_date = date
     lon = line[12]
     lat = line[13]
     if lon and lat:
@@ -47,7 +50,7 @@ for line in reader:
         # print date, "nongeo"
         nongeotagged[date] += 1
 
-current_date = datetime.date(2004,1,1)
+current_date = earliest_date
 while current_date <= datetime.date(2016,1,1):
     outwriter.writerow([str(current_date), geotagged[current_date], nongeotagged[current_date]])
     current_date += datetime.timedelta(1)
