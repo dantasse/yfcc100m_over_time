@@ -30,7 +30,6 @@ reader = csv.reader(open(args.infile), delimiter='\t')
 csv.field_size_limit(longest_line)
 for line in reader:
     counter += 1
-    print counter
     if counter % (1000*1000) == 0:
         print "This many photos processed: %s" % str(counter)
 
